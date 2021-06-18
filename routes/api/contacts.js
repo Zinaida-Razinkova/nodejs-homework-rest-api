@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const express = require('express')
 const router = express.Router()
 const contacts = require('../../model')
@@ -17,9 +18,37 @@ router.get('/', async (req, res, next) => {
     return res.status(400).json({
       message: 'data is empty',
     })
+=======
+const express = require("express");
+const router = express.Router();
+const actions = require("../../model");
+const {
+  validationAddContact,
+  validationUpdateContact,
+  validationObjectId,
+  validateUpdateContactFav,
+} = require("./validationContacts");
+
+router.get("/", async (req, res, next) => {
+  const data = await actions.listContacts();
+  try {
+    return res.status(200).json({
+      data,
+      message: "data loaded",
+      status: "success",
+      code: "200",
+    });
+  } catch (err) {
+    return res.status(400).json({
+      message: "data is empty",
+      status: "error",
+      code: "400",
+    });
+>>>>>>> Stashed changes
   }
 })
 
+<<<<<<< Updated upstream
 router.get('/:contactId', async (req, res, next) => {
   try {
     const data = await contacts.getContactById(req.params.contactId)
@@ -32,6 +61,24 @@ router.get('/:contactId', async (req, res, next) => {
       return res.status(404).json({
         message: 'Not found',
       })
+=======
+router.get("/:contactId", validationObjectId, async (req, res, next) => {
+  try {
+    const data = await actions.getContactById(req.params.contactId);
+    if (data) {
+      return res.status(200).json({
+        data,
+        message: "data loaded",
+        status: "success",
+        code: "200",
+      });
+    } else {
+      return res.status(404).json({
+        message: "Not found",
+        status: "error",
+        code: "404",
+      });
+>>>>>>> Stashed changes
     }
   } catch (err) {
     next(err)
@@ -40,19 +87,37 @@ router.get('/:contactId', async (req, res, next) => {
 
 router.post('/', validationAddContact, async (req, res, next) => {
   try {
+<<<<<<< Updated upstream
     const data = await contacts.addContact(req.body)
     return res.status(201).json({
       data,
       message: 'contact created',
     })
+=======
+    const data = await actions.addContact(req.body);
+    return res.status(201).json({
+      data,
+      message: "contact created",
+      status: "success",
+      code: "201",
+    });
+>>>>>>> Stashed changes
   } catch (err) {
     console.log(err)
     return res.status(400).json({
+<<<<<<< Updated upstream
       message: 'missing required name field',
     })
+=======
+      message: "missing required name field",
+      status: "error",
+      code: "400",
+    });
+>>>>>>> Stashed changes
   }
 })
 
+<<<<<<< Updated upstream
 router.delete('/:contactId', async (req, res, next) => {
   try {
     const data = await contacts.removeContact(req.params.contactId)
@@ -65,12 +130,31 @@ router.delete('/:contactId', async (req, res, next) => {
       return res.status(404).json({
         message: 'Not found',
       })
+=======
+router.delete("/:contactId", validationObjectId, async (req, res, next) => {
+  try {
+    const data = await actions.removeContact(req.params.contactId);
+    if (data) {
+      return res.status(200).json({
+        data,
+        message: "contact deleted",
+        status: "success",
+        code: "200",
+      });
+    } else {
+      return res.status(404).json({
+        message: "Not found",
+        status: "error",
+        code: "404",
+      });
+>>>>>>> Stashed changes
     }
   } catch (err) {
     next(err)
   }
 })
 
+<<<<<<< Updated upstream
 router.put('/:contactId', validationUpdateContact, async (req, res, next) => {
   try {
     const data = await contacts.updateContact(req.params.contactId, req.body)
@@ -88,5 +172,63 @@ router.put('/:contactId', validationUpdateContact, async (req, res, next) => {
     next(err)
   }
 })
+=======
+router.patch(
+  "/:contactId/favorite",
+  validateUpdateContactFav,
+  validationObjectId,
+  async (req, res, next) => {
+    try {
+      const data = await actions.updateStatusContact(
+        req.params.contactId,
+        req.body
+      );
+      if (data) {
+        return res.status(200).json({
+          data,
+          message: "contact update",
+          status: "success",
+          code: "200",
+        });
+      } else {
+        return res.status(404).json({
+          message: "Not found",
+          status: "error",
+          code: "404",
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+router.put(
+  "/:contactId",
+  validationUpdateContact,
+  validationObjectId,
+  async (req, res, next) => {
+    try {
+      const data = await actions.updateContact(req.params.contactId, req.body);
+      if (data) {
+        return res.status(200).json({
+          data,
+          message: "contact update",
+          status: "success",
+          code: "200",
+        });
+      } else {
+        return res.status(404).json({
+          message: "Not found",
+          status: "error",
+          code: "404",
+        });
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+>>>>>>> Stashed changes
 
 module.exports = router
