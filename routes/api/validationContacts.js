@@ -3,19 +3,16 @@ const mongoose = require("mongoose");
 
 const schemaAddContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).required(),
-
   phone: Joi.string().min(7).max(18).required(),
-
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .required(),
   favorite: Joi.boolean(),
 });
+
 const schemaUpdateContact = Joi.object({
   name: Joi.string().alphanum().min(3).max(30).optional(),
-
   phone: Joi.string().min(7).max(18).optional(),
-
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
     .optional(),

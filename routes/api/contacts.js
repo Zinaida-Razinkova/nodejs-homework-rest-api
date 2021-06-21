@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const actions = require("../../model");
+const contacts = require("../../model");
 const {
   validationAddContact,
   validationUpdateContact,
@@ -9,7 +9,7 @@ const {
 } = require("./validationContacts");
 
 router.get("/", async (req, res, next) => {
-  const data = await actions.listContacts();
+  const data = await contacts.listContacts();
   try {
     return res.status(200).json({
       data,
@@ -28,7 +28,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:contactId", validationObjectId, async (req, res, next) => {
   try {
-    const data = await actions.getContactById(req.params.contactId);
+    const data = await contacts.getContactById(req.params.contactId);
     if (data) {
       return res.status(200).json({
         data,
@@ -50,7 +50,7 @@ router.get("/:contactId", validationObjectId, async (req, res, next) => {
 
 router.post("/", validationAddContact, async (req, res, next) => {
   try {
-    const data = await actions.addContact(req.body);
+    const data = await contacts.addContact(req.body);
     return res.status(201).json({
       data,
       message: "contact created",
@@ -69,7 +69,7 @@ router.post("/", validationAddContact, async (req, res, next) => {
 
 router.delete("/:contactId", validationObjectId, async (req, res, next) => {
   try {
-    const data = await actions.removeContact(req.params.contactId);
+    const data = await contacts.removeContact(req.params.contactId);
     if (data) {
       return res.status(200).json({
         data,
@@ -95,10 +95,7 @@ router.patch(
   validationObjectId,
   async (req, res, next) => {
     try {
-      const data = await actions.updateStatusContact(
-        req.params.contactId,
-        req.body
-      );
+      const data = await contacts.updateContact(req.params.contactId, req.body);
       if (data) {
         return res.status(200).json({
           data,
@@ -125,7 +122,7 @@ router.put(
   validationObjectId,
   async (req, res, next) => {
     try {
-      const data = await actions.updateContact(req.params.contactId, req.body);
+      const data = await contacts.updateContact(req.params.contactId, req.body);
       if (data) {
         return res.status(200).json({
           data,
