@@ -5,15 +5,13 @@ const uriDb = process.env.MONGO_URL;
 console.log(uriDb);
 
 const db = async () => {
-  return await mongoose.connect(uriDb,
-    {
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useNewUrlParser: true,
-      useFindAndModify: false,
-    }
-  )
-}
+  return await mongoose.connect(uriDb, {
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+  });
+};
 
 mongoose.connection.on("connected", (error) => {
   console.log("Database connection successful");
