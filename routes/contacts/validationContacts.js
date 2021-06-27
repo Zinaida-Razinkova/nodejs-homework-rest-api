@@ -22,6 +22,12 @@ const schemaUpdateContact = Joi.object({
   favorite: Joi.boolean().optional(),
 }).min(1);
 
+const schemaQueryContact = Joi.object({
+  favorite: Joi.boolean().optional(),
+  page: Joi.number().min(1).max(100).optional(),
+  limit: Joi.number().min(10).max(50).optional(),
+});
+
 const schemaUpdateContactFav = Joi.object({
   favorite: Joi.boolean().required(),
 });
@@ -59,5 +65,8 @@ module.exports = {
       });
     }
     next();
+  },
+  validationQueryContacts: async (req, res, next) => {
+    return await validation(schemaQueryContact, req.query, next);
   },
 };
