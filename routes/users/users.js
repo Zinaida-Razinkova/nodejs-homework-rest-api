@@ -18,13 +18,18 @@ const {
 const guard = require("../../helpers/guard");
 const uploadAvatar = require("../../helpers/uploadAvatar");
 
-router.post("/signup", validateSignupUser, signupUser);
-router.post("/login", validateLoginUser, loginUser);
+router.post("/signup", guard, validateSignupUser, signupUser);
+router.post("/login", guard, validateLoginUser, loginUser);
 router.post("/logout", guard, logoutUser);
 router.get("/current", guard, getCurrentUser);
-router.patch("/", guard, validateUpdateSubUser, updateSubscriptionUser);
 router.patch(
-  "/avatars",
+  "/subscription",
+  guard,
+  validateUpdateSubUser,
+  updateSubscriptionUser
+);
+router.patch(
+  "/avatar",
   guard,
   uploadAvatar.single("avatar"),
   updateAvatar
