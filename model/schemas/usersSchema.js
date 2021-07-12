@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { subscriptions } = require("../../helpers/subscriptions");
+const { nanoid } = require("nanoid");
 const gravatar = require("gravatar");
 require("dotenv").config();
 const SALT_FACTOR = Number(process.env.SALT_FACTOR);
@@ -37,6 +38,15 @@ const usersSchema = new Schema(
     idCloudAvatar: {
       type: String,
       default: null,
+    },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+      default: nanoid(),
     },
   },
   {
