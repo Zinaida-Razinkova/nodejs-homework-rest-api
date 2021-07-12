@@ -7,7 +7,8 @@ const {
   getCurrentUser,
   updateSubscriptionUser,
   updateAvatar,
-  updateCloudAvatar,
+  emailVerify,
+  repeatEmailVerify,
 } = require("../../controllers/users");
 
 const {
@@ -28,12 +29,9 @@ router.patch(
   validateUpdateSubUser,
   updateSubscriptionUser
 );
-router.patch(
-  "/avatar",
-  guard,
-  uploadAvatar.single("avatar"),
-  updateAvatar
-  /* updateCloudAvatar */
-);
+router.patch("/avatar", guard, uploadAvatar.single("avatar"), updateAvatar);
+
+router.get("/verify/:token", emailVerify);
+router.post("/verify", repeatEmailVerify);
 
 module.exports = router;
